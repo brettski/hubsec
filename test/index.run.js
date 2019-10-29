@@ -6,9 +6,9 @@ const {run} = require('../index')
 describe('Run, run', function() {
     const v = run()
     it ('Should equal value', function() {
-        expect(v == 131)
+        expect(v === 131).to.be.true
     })
     it ('should not equal value', function() {
-        expect(v != 133)
+        expect(v === 133).to.be.false
     })
 })
