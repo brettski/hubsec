@@ -11,6 +11,7 @@ const run = () => {
     console.log('b64',Buffer.from(bcs).toString('base64'))
     const sum = (parseInt(bcs) + 22 - 2)
     console.log('sum', sum)
+    return sum
 }
 
 module.exports = {
