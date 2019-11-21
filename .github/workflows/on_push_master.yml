@@ -34,7 +34,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
-      if: job.status == "failure" || job.status == "cancelled"
+      if: job.status == 'failure' || job.status == 'cancelled'
 
 
   something:
