@@ -26,3 +26,13 @@ jobs:
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
+    - name: Notification
+      uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: Master Push CI
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
+      if: always()
+      
