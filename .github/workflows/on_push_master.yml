@@ -75,4 +75,4 @@ jobs:
     steps:
     - name: get req
       run: curl https://hookops-q8h27n9ef.now.sh/api/goodbye
-      
+      run: curl https://hookops-q8h27n9ef.now.sh/api/good-bye
