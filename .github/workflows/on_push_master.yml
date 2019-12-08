@@ -78,5 +78,5 @@ jobs:
         curl -s -f https://hookops-q8h27n9ef.now.sh/api/goodbye
         CHECK_RESULT=$(curl -s -f https://hookops.brettski.now.sh/api/json | jq '.status')
         echo $CHECK_RESULT
-        if [ $CHECK_RESULT == '"ok"' ]; then exit 99; fi
+        if [ $CHECK_RESULT != '"ok"' ]; then exit 99; fi
         
