@@ -75,5 +75,8 @@ jobs:
     steps:
     - name: get req
       run: |
-        curl -f https://hookops-q8h27n9ef.now.sh/api/goodbye
-        curl -f https://hookops.brettski.now.sh/api/json | jq
+        curl -s -f https://hookops-q8h27n9ef.now.sh/api/goodbye
+        CHECK_RESULT=$(curl -s -f https://hookops.brettski.now.sh/api/json | jq ''.status')
+        echo $CHECK_RESULT
+        if [ $CHECK_RESLUT == '"ok"' ]; then exit 1; fi
+        
