@@ -76,4 +76,4 @@ jobs:
     - name: get req
       run: |
         curl -f https://hookops-q8h27n9ef.now.sh/api/goodbye
-        curl -f https://hookops-q8h27n9ef.now.sh/api/good-bye
+        curl -f https://hookops.brettski.now.sh/api/json | jq
