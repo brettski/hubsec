@@ -23,8 +23,10 @@ jobs:
         npm ci
         npm run build --if-present
         npm test
-        export TEST_VALUE="Some test value"
-        export C_NO=`git rev-list --count master`
+        TEST_VALUE="Some test value"
+        echo "::set-env name=C_NO::`git rev-list --count master`"
+        echo "::set-env name=TEST_VALUE::$TEST_VALUE"
+        git rev-list --count master
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
