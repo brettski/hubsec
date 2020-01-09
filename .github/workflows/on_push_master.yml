@@ -23,14 +23,17 @@ jobs:
         npm ci
         npm run build --if-present
         npm test
-        TEST_VALUE="Some test value"
+        export TEST_VALUE="Some test value"
+        export C_NO=`git rev-list --count master`
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
     - name: Checks 
       run: |
+        echo $C_NO
         echo $TEST_VALUE
         echo $GITHUB_SHA
+        echo "**********"
         env
     - name: Notification
       uses: 8398a7/action-slack@v2
@@ -63,19 +66,19 @@ jobs:
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
-    - name: Setup Actions
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '274.0.1'
-        service_account_key: ${{ secrets.SUPER_SECRET }}
-    - name: Load beta bits 
-      run: gcloud components install beta
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
-    - name: Run Deploy Function - 
-      run: gcloud beta secrets list
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+    # - name: Setup Actions
+    #   uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+    #   with:
+    #     version: '274.0.1'
+    #     service_account_key: ${{ secrets.SUPER_SECRET }}
+    # - name: Load beta bits 
+    #   run: gcloud components install beta
+    #   env:
+    #     CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+    # - name: Run Deploy Function - 
+    #   run: gcloud beta secrets list
+    #   env:
+    #     CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
 
       
   post:
