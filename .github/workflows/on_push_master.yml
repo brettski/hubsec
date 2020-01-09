@@ -57,16 +57,16 @@ jobs:
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
-   
-    - name: Notification
-      uses: 8398a7/action-slack@v2
+    - name: Setup Actions
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
-        status: ${{ job.status }}
-        author_name: Master Push CI
+        version: '270.0.0'
+        service_account_key: ${{ secrets.SUPER_SECRET }}
+    - name: Run Deploy Function - 
+      run: gcloud beta secrets list --quiet
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
-      if: always()
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+
       
   post:
     name: Post Done
