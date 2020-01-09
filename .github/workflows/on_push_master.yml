@@ -23,9 +23,15 @@ jobs:
         npm ci
         npm run build --if-present
         npm test
+        TEST_VALUE="Some test value"
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
+    - name: Checks 
+      run: |
+        echo $TEST_VALUE
+        echo $GITHUB_SHA
+        env
     - name: Notification
       uses: 8398a7/action-slack@v2
       with:
