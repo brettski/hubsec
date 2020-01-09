@@ -62,8 +62,12 @@ jobs:
       with:
         version: '270.0.0'
         service_account_key: ${{ secrets.SUPER_SECRET }}
+    - name: Load beta bits 
+      run: gcloud components install beta
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
     - name: Run Deploy Function - 
-      run: gcloud beta secrets list --quiet
+      run: gcloud beta secrets list
       env:
         CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
 
