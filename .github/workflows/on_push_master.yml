@@ -25,8 +25,12 @@ jobs:
         npm test
         C_NO=$(git rev-list --count master)
         TEST_VALUE="Some test value"
-        echo "::set-env name=TEST_VALUE::$TEST_VALUE"
+        echo "test0: $TEST_VALUE"
         echo "::add-mask::$TEST_VALUE"
+        echo "test1: $TEST_VALUE"
+        echo "::add-mask::$C_NO"
+        echo "::set-env name=TEST_VALUE::$TEST_VALUE"
+        echo "::set-env name=C_NO::$C_NO"
         git rev-list --count master
         
       env:
