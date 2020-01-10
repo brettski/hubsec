@@ -13,7 +13,9 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Use Node.js 10.x
       uses: actions/setup-node@master
       with:
@@ -23,13 +25,13 @@ jobs:
         npm ci
         npm run build --if-present
         npm test
-        echo "shortlog $(git shortlog -s)"
+        echo "shortlog" 
+        git shortlog -s
         C_NO=$(git rev-list --count master)
         TEST_VALUE="Some test value"
         echo "test0: $TEST_VALUE"
         echo "::add-mask::$TEST_VALUE"
         echo "test1: $TEST_VALUE"
-        echo "::add-mask::$C_NO"
         echo "::set-env name=TEST_VALUE::$TEST_VALUE"
         echo "::set-env name=C_NO::$C_NO"
         git rev-list --count master
