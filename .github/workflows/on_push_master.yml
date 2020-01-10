@@ -68,21 +68,22 @@ jobs:
       env:
         CI: true
         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
-    # - name: Setup Actions
-    #   uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-    #   with:
-    #     version: '274.0.1'
-    #     service_account_key: ${{ secrets.SUPER_SECRET }}
-    # - name: Load beta bits 
-    #   run: gcloud components install beta
-    #   env:
-    #     CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
-    # - name: Run Deploy Function - 
-    #   run: gcloud beta secrets list
-    #   env:
-    #     CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+    - name: Setup Actions
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '274.0.1'
+        service_account_key: ${{ secrets.SUPER_SECRET }}
+    - name: Load beta bits 
+      run: gcloud components install beta
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+    - name: Run Deploy Function - 
+      run: |
+        gcloud beta secrets versions access latest --secret test-api-gateway-env > .env
+        ls -lasi
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
 
-      
   post:
     name: Post Done
     needs: [build, something]
