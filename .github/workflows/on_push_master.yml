@@ -53,9 +53,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
       if: job.status == 'failure' || job.status == 'cancelled'
-    - name: gcp access check
-      run: gcloud beta secrets list
-
 
   something:
     name: Something else
@@ -92,7 +89,15 @@ jobs:
         ls -lasi
       env:
         CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
-
+    - name: add mask
+      run: echo "::add-mask::and"
+    - name: get secret into PID
+      run: |
+        PID=$(gcloud beta secrets versions access latest --secret test-gcloud-project_id)
+        echo "**********"
+        echo $PID
+        echo "**********"
+        
   post:
     name: Post Done
     needs: [build, something]
