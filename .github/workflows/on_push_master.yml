@@ -53,6 +53,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
       if: job.status == 'failure' || job.status == 'cancelled'
+    - name: gcp access check
+      run: gcloud beta secrets list
 
 
   something:
