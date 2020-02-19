@@ -1,11 +1,11 @@
-name: Function-C Push Master
+name: Function-A Push Master
 
 on:
   push:
     branches:
       - master
     paths:
-      - "functions/function-c/**"
+      - "functions/function-a/**"
 
 jobs:
   job1:
@@ -24,6 +24,6 @@ jobs:
       - name: npm install, build, and test
         run: |
           pwd
-          cd functions/function-c
+          cd functions/function-a
           npm ci
           ls -lasi
