@@ -1,0 +1,29 @@
+name: Function-C Push Master
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "functions/function-c/**"
+
+jobs:
+  job1:
+    name: Job 1
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@master
+        with:
+          node-version: 10.x
+      - name: npm install, build, and test
+        run: |
+          pwd
+          cd functions/function-c
+          npm ci
+          ls -lasi
