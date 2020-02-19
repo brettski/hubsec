@@ -1,133 +1,133 @@
-name: Master Push CI
+# name: Master Push CI
 
-on: 
-  push:
-    branches:
-      - master
+# on: 
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  build:
-    name: Build and test
+# jobs:
+#   build:
+#     name: Build and test
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Use Node.js 10.x
-      uses: actions/setup-node@master
-      with:
-        node-version: 10.x
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm run build --if-present
-        npm test
-        TEST_VALUE="Some test value"
-        echo "test0: $TEST_VALUE"
-        echo "::add-mask::$TEST_VALUE"
-        echo "test1: $TEST_VALUE"
-        echo "::set-env name=TEST_VALUE::$TEST_VALUE"
-        git rev-list --count master > cnt.txt
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
+#       with:
+#         fetch-depth: 0
+#     - name: Use Node.js 10.x
+#       uses: actions/setup-node@master
+#       with:
+#         node-version: 10.x
+#     - name: npm install, build, and test
+#       run: |
+#         npm ci
+#         npm run build --if-present
+#         npm test
+#         TEST_VALUE="Some test value"
+#         echo "test0: $TEST_VALUE"
+#         echo "::add-mask::$TEST_VALUE"
+#         echo "test1: $TEST_VALUE"
+#         echo "::set-env name=TEST_VALUE::$TEST_VALUE"
+#         git rev-list --count master > cnt.txt
         
-      env:
-        CI: true
-        BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
-    - name: Checks 
-      run: |
-        echo "**********"
-        echo $TEST_VALUE
-        echo $GITHUB_SHA
-        echo "**********"
-        env
-    - name: save build artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: arci
-        path: .
-    - name: Notification
-      uses: 8398a7/action-slack@v2
-      with:
-        status: ${{ job.status }}
-        author_name: Master Push CI
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
-      if: job.status == 'failure' || job.status == 'cancelled'
+#       env:
+#         CI: true
+#         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
+#     - name: Checks 
+#       run: |
+#         echo "**********"
+#         echo $TEST_VALUE
+#         echo $GITHUB_SHA
+#         echo "**********"
+#         env
+#     - name: save build artifact
+#       uses: actions/upload-artifact@master
+#       with:
+#         name: arci
+#         path: .
+#     - name: Notification
+#       uses: 8398a7/action-slack@v2
+#       with:
+#         status: ${{ job.status }}
+#         author_name: Master Push CI
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         SLACK_WEBHOOK_URL: ${{ secrets.SHOOK }}
+#       if: job.status == 'failure' || job.status == 'cancelled'
 
-  deploy:
-    name: deploy - not really
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download arci
-        uses: actions/download-artifact@v1
-        with:
-          name: arci
-      - name: verifications of arci
-        run: |
-          ls -lasi
-          cat cnt.txt
+#   deploy:
+#     name: deploy - not really
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Download arci
+#         uses: actions/download-artifact@v1
+#         with:
+#           name: arci
+#       - name: verifications of arci
+#         run: |
+#           ls -lasi
+#           cat cnt.txt
           
           
 
-  something:
-    name: Something else
-    needs: build
-    runs-on: ubuntu-latest
+#   something:
+#     name: Something else
+#     needs: build
+#     runs-on: ubuntu-latest
     
-    steps:
-    - name: Checkout
-      uses: actions/checkout@master
-    - name: Use Node.js 10.x
-      uses: actions/setup-node@master
-      with:
-        node-version: 10.x
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm run build --if-present
-        npm test
-      env:
-        CI: true
-        BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
-    - name: Setup Actions
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '274.0.1'
-        service_account_key: ${{ secrets.SUPER_SECRET }}
-    - name: Load beta bits 
-      run: gcloud components install beta
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
-    - name: Run Deploy Function - 
-      run: |
-        gcloud beta secrets versions access latest --secret test-api-gateway-env > .env
-        PREPID=$(gcloud beta secrets versions access latest --secret test-gcloud-project_id)
-        ls -lasi
-        echo $PREPID
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
-    - name: add mask
-      run: echo "::add-mask::and"
-    - name: get secret into PID
-      run: |
-        PID=$(gcloud beta secrets versions access latest --secret test-gcloud-project_id --project ${{ secrets.PROJECT }})
-        echo "**********"
-        echo $PID
-        echo "**********"
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@master
+#     - name: Use Node.js 10.x
+#       uses: actions/setup-node@master
+#       with:
+#         node-version: 10.x
+#     - name: npm install, build, and test
+#       run: |
+#         npm ci
+#         npm run build --if-present
+#         npm test
+#       env:
+#         CI: true
+#         BRETT_SECRET: ${{ secrets.BRETT_SECRET }}
+#     - name: Setup Actions
+#       uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+#       with:
+#         version: '274.0.1'
+#         service_account_key: ${{ secrets.SUPER_SECRET }}
+#     - name: Load beta bits 
+#       run: gcloud components install beta
+#       env:
+#         CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+#     - name: Run Deploy Function - 
+#       run: |
+#         gcloud beta secrets versions access latest --secret test-api-gateway-env > .env
+#         PREPID=$(gcloud beta secrets versions access latest --secret test-gcloud-project_id)
+#         ls -lasi
+#         echo $PREPID
+#       env:
+#         CLOUDSDK_CORE_PROJECT: ${{ secrets.PROJECT }}
+#     - name: add mask
+#       run: echo "::add-mask::and"
+#     - name: get secret into PID
+#       run: |
+#         PID=$(gcloud beta secrets versions access latest --secret test-gcloud-project_id --project ${{ secrets.PROJECT }})
+#         echo "**********"
+#         echo $PID
+#         echo "**********"
 
-  post:
-    name: Post Done
-    needs: [build, something]
-    runs-on: ubuntu-latest
-    steps:
-    - name: get req
-      run: |
-        curl -s -f https://hookops-q8h27n9ef.now.sh/api/goodbye
-        CHECK_RESULT=$(curl -s -f https://hookops.brettski.now.sh/api/json | jq '.status')
-        echo $CHECK_RESULT
-        if [ $CHECK_RESULT != '"ok"' ]; then exit 99; fi
+#   post:
+#     name: Post Done
+#     needs: [build, something]
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: get req
+#       run: |
+#         curl -s -f https://hookops-q8h27n9ef.now.sh/api/goodbye
+#         CHECK_RESULT=$(curl -s -f https://hookops.brettski.now.sh/api/json | jq '.status')
+#         echo $CHECK_RESULT
+#         if [ $CHECK_RESULT != '"ok"' ]; then exit 99; fi
         
